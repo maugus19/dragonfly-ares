@@ -10,7 +10,7 @@ export async function scrapping(code: string) {
     let serverName = '';
 
     // 1. Configuración del Navegador (Compatible con Local y Vercel)
-
+    const CHROMIUM_PATH = "https://github.com/Sparticuz/chromium/releases/download/v123.0.1/chromium-v123.0.1-pack.tar";
     const browser = await puppeteer.launch({
       args: chromium.args,
       // SOLUCIÓN: Definir el objeto manualmente si da error de tipo
@@ -19,7 +19,7 @@ export async function scrapping(code: string) {
         height: 720,
         isMobile: false,
       },
-      executablePath: await chromium.executablePath(),
+      executablePath: await chromium.executablePath(CHROMIUM_PATH),
       headless: true // Cast a any por discrepancias de tipos en versiones nuevas
     });
     const page = await browser.newPage();
