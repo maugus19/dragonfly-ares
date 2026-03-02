@@ -1,3 +1,4 @@
+import { scrapping } from '@/utils/scrapper/scrapper';
 import { createClient } from '@/utils/supabase/server'; // Ajusta la ruta según tu proyecto
 import { NextResponse } from 'next/server';
 
@@ -10,7 +11,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
   }
   // Tu lógica de procesamiento...
-  const processedUrl = `https://mi-app.com/v/${Buffer.from(code).toString('base64')}`;
+  const processedUrl = await scrapping(code);
 
   const { data, error } = await supabase
     .from('codes')
