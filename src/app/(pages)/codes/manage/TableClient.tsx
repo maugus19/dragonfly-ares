@@ -1,7 +1,7 @@
 'use client';
-import { 
-  Table, TableBody, TableCell, TableContainer, TableHead, 
-  TableRow, Paper, Checkbox, IconButton, Link, Button 
+import {
+  Table, TableBody, TableCell, TableContainer, TableHead,
+  TableRow, Paper, Checkbox, IconButton, Link, Button
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -12,8 +12,9 @@ export default function TableClient({ initialCodes }: { initialCodes: any[] }) {
 
   const handleDelete = async (id: string) => {
     if (confirm('¿Estás seguro de eliminar este código?')) {
-      // Aquí llamarías a tu API de Supabase para borrar
-      // await supabase.from('codes').delete().eq('id', id);
+      await fetch(`/api/codes/${id}`, {
+        method: 'DELETE',
+      });
       router.refresh(); // Refresca los datos del servidor
     }
   };
@@ -35,7 +36,7 @@ export default function TableClient({ initialCodes }: { initialCodes: any[] }) {
               <TableCell>{row.code}</TableCell>
               <TableCell>
                 <Link href={row.url} target="_blank" rel="noopener">
-                  {row.url}
+                  {JSON.stringify(row.url)}
                 </Link>
               </TableCell>
               <TableCell align="center">
@@ -45,9 +46,9 @@ export default function TableClient({ initialCodes }: { initialCodes: any[] }) {
                 <IconButton color="primary" size="small">
                   <EditIcon />
                 </IconButton>
-                <IconButton 
-                  color="error" 
-                  size="small" 
+                <IconButton
+                  color="error"
+                  size="small"
                   onClick={() => handleDelete(row.id)}
                 >
                   <DeleteIcon />

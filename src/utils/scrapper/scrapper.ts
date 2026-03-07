@@ -69,7 +69,7 @@ export async function scrapping(code: string) {
       await browser.close();
       console.log(result)
 
-      return { videos: result };
+      return result;
 
     } catch (innerError) {
       if (browser) await browser.close();
