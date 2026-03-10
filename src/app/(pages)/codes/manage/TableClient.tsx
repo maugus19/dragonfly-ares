@@ -1,7 +1,7 @@
 'use client';
 import {
   Table, TableBody, TableCell, TableContainer, TableHead,
-  TableRow, Paper, Checkbox, IconButton, Link, Button
+  TableRow, Paper, Checkbox, IconButton, Link
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -15,7 +15,7 @@ export default function TableClient({ initialCodes }: { initialCodes: any[] }) {
       await fetch(`/api/codes/${id}`, {
         method: 'DELETE',
       });
-      router.refresh(); // Refresca los datos del servidor
+      router.refresh();
     }
   };
 

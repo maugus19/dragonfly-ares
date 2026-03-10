@@ -55,6 +55,15 @@ export default function HomePage() {
           </Button>
         </Link>
       </Box>
+      <Box sx={{ mt: 8, textAlign: 'center' }}>
+        <Button variant="contained" color="secondary" onClick={async () => {
+          await fetch('/api/shangri-la/process', {
+            method: 'POST',
+          });
+        }}>
+          Update Manga
+        </Button>
+      </Box>
     </Container>
   );
 }
