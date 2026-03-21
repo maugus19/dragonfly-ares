@@ -9,7 +9,7 @@ export default function UploadQueue() {
   const [message, setMessage] = useState<string | null>(null)
 
   const handleUpload = async () => {
-    const codes = value.split(/\r?\n/).map(s => s.trim()).filter(Boolean)
+    const codes = value.split(/\r?\n/).map(s => s.trim().toUpperCase()).filter(Boolean)
     if (codes.length === 0) {
       setMessage('No codes to upload')
       return
