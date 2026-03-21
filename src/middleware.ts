@@ -50,7 +50,7 @@ export async function middleware(request: NextRequest) {
   }
 
   if (user && (isLoginPage || isRootPage)) {
-    return NextResponse.redirect(new URL('/codes', request.url))
+    return NextResponse.redirect(new URL('/home', request.url))
   }
 
   return response

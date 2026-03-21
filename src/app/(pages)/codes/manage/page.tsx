@@ -1,6 +1,7 @@
 import { Container, Typography, Box, Button } from '@mui/material';
 import { createClient } from '@/utils/supabase/server';
 import TableClient from './TableClient';
+import UploadQueue from './UploadQueue';
 import Link from 'next/link';
 
 export default async function ManagePage() {
@@ -28,6 +29,8 @@ export default async function ManagePage() {
           </Button>
         </Link>
       </Box>
+
+  <UploadQueue />
 
       {/* Pasamos los datos al componente de cliente */}
       <TableClient initialCodes={codes || []} />
