@@ -36,7 +36,8 @@ export async function POST(req: Request) {
   const { data, error } = await supabase
     .from('codes')
     .insert([{
-      code, url: processedUrl,
+      ...processedUrl,
+      code: code,
       user_id: user.id
     }]);
 
