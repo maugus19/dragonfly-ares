@@ -13,6 +13,8 @@ type CodeRow = {
   id: string;
   code: string;
   url: string;
+  image_url: string;
+  title: string;
   viewed: boolean;
   // add other fields present in your API if needed
 }
@@ -37,6 +39,8 @@ export default function TableClient({ initialCodes }: { initialCodes: CodeRow[] 
         <TableHead sx={(theme) => ({ backgroundColor: theme.palette.mode === 'dark' ? theme.palette.background.paper : '#f5f5f5' })}>
           <TableRow>
             <TableCell sx={{ color: 'text.primary' }}><strong>Code</strong></TableCell>
+            <TableCell sx={{ color: 'text.primary' }}><strong>Title</strong></TableCell>
+            <TableCell sx={{ color: 'text.primary' }}><strong>Image URL</strong></TableCell>
             <TableCell sx={{ color: 'text.primary' }}><strong>URL</strong></TableCell>
             <TableCell align="center" sx={{ color: 'text.primary' }}><strong>Viewed</strong></TableCell>
             <TableCell align="center" sx={{ color: 'text.primary' }}><strong>Acciones</strong></TableCell>
@@ -46,6 +50,8 @@ export default function TableClient({ initialCodes }: { initialCodes: CodeRow[] 
           {initialCodes.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
             <TableRow key={row.id} hover>
               <TableCell>{row.code}</TableCell>
+              <TableCell>{row.title}</TableCell>
+              <TableCell>{row.image_url}</TableCell>
               <TableCell>
                 <Link href={row.url} target="_blank" rel="noopener">
                   {JSON.stringify(row.url)}

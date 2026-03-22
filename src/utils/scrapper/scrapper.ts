@@ -2,7 +2,7 @@ import chromium from '@sparticuz/chromium';
 import puppeteer from 'puppeteer-core';
 
 export type ScrapeVideo = { server: string; url: string }
-export type ScrapeResult = { title: string; image: string; url: ScrapeVideo[] }
+export type ScrapeResult = { title: string; image_url: string; url: ScrapeVideo[] }
 
 export async function scrapping(code: string): Promise<ScrapeResult> {
   try {
@@ -122,7 +122,7 @@ export async function scrapping(code: string): Promise<ScrapeResult> {
 
       const result = Array.from(videoUrls);
       await browser.close();
-      const scraped: ScrapeResult = { title: pageTitle, image: pageImage, url: result };
+      const scraped: ScrapeResult = { title: pageTitle, image_url: pageImage, url: result };
       console.log(scraped)
 
       return scraped;
