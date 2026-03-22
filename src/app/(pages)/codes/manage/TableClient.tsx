@@ -12,7 +12,7 @@ import { useState } from 'react';
 export type CodeRow = {
   id: string;
   code: string;
-  url: string;
+  url: { server: string; url: string }[];
   image_url: string;
   title: string;
   viewed: boolean;
