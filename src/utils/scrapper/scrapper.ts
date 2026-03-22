@@ -1,10 +1,11 @@
 import chromium from '@sparticuz/chromium';
+import { on } from 'events';
 import puppeteer from 'puppeteer-core';
 
 export type ScrapeVideo = { server: string; url: string }
 export type ScrapeResult = { title: string; image_url: string; url: ScrapeVideo[] }
 
-export async function scrapping(code: string): Promise<ScrapeResult> {
+export async function scrapping(code: string, onlyURLs: boolean = false): Promise<ScrapeResult | { url: ScrapeVideo[] }> {
   try {
     const base_url = process.env.NEXT_PUBLIC_SCRAPPER_BASE_URL;
     const target_url = `${base_url}${code}`;
@@ -68,64 +69,74 @@ export async function scrapping(code: string): Promise<ScrapeResult> {
         }
       }
 
-      // Extraer título e imagen del video usando meta tags y selectores de reserva
-      const pageTitle = await page.evaluate(() => {
-        // Prefer og:title or <title>
-        let title = (
-          document.querySelector("meta[property='og:title']")?.getAttribute('content') ||
-          document.querySelector("meta[name='og:title']")?.getAttribute('content') ||
-          document.querySelector('title')?.innerText ||
-          ''
-        ).trim();
+      if (!onlyURLs) {
+        // Extraer título e imagen del video usando meta tags y selectores de reserva
+        const pageTitle = await page.evaluate(() => {
+          // Prefer og:title or <title>
+          let title = (
+            document.querySelector("meta[property='og:title']")?.getAttribute('content') ||
+            document.querySelector("meta[name='og:title']")?.getAttribute('content') ||
+            document.querySelector('title')?.innerText ||
+            ''
+          ).trim();
 
-        // If there are card blocks with multiple .card-title (example provided),
-        // pick the longest one (usually the full descriptive title)
-        try {
-          const cards = Array.from(document.querySelectorAll('div.card-block h2.card-title'))
-            .map(n => (n as HTMLElement).innerText.trim())
-            .filter(Boolean);
+          // If there are card blocks with multiple .card-title (example provided),
+          // pick the longest one (usually the full descriptive title)
+          try {
+            const cards = Array.from(document.querySelectorAll('div.card-block h2.card-title'))
+              .map(n => (n as HTMLElement).innerText.trim())
+              .filter(Boolean);
 
-          if (cards.length) {
-            const longest = cards.reduce((a, b) => (a.length >= b.length ? a : b));
-            if (!title || longest.length > title.length) title = longest;
+            if (cards.length) {
+              const longest = cards.reduce((a, b) => (a.length >= b.length ? a : b));
+              if (!title || longest.length > title.length) title = longest;
+            }
+          } catch (e) {
+            // ignore DOM errors
           }
-        } catch (e) {
-          // ignore DOM errors
-        }
 
-        // other fallbacks
-        const selectors = ['h1', '.entry-title', '.title'];
+          // other fallbacks
+          const selectors = ['h1', '.entry-title', '.title'];
 
-        if (!title) {
-          for (const selector of selectors) {
-            const text = document.querySelector(selector)?.textContent?.trim();
-            if (text) {
-              title = text;
-              break;
+          if (!title) {
+            for (const selector of selectors) {
+              const text = document.querySelector(selector)?.textContent?.trim();
+              if (text) {
+                title = text;
+                break;
+              }
             }
           }
-        }
 
-        return title;
-      });
+          return title;
+        });
 
-      const pageImage = await page.evaluate(() => {
-        return (
-          document.querySelector("meta[property='og:image']")?.getAttribute('content') ||
-          document.querySelector("meta[name='og:image']")?.getAttribute('content') ||
-          (document.querySelector('.thumb img') as HTMLImageElement | null)?.src ||
-          (document.querySelector('.poster img') as HTMLImageElement | null)?.src ||
-          (document.querySelector('img') as HTMLImageElement | null)?.src ||
-          ''
-        );
-      });
+        const pageImage = await page.evaluate(() => {
+          return (
+            document.querySelector("meta[property='og:image']")?.getAttribute('content') ||
+            document.querySelector("meta[name='og:image']")?.getAttribute('content') ||
+            (document.querySelector('.thumb img') as HTMLImageElement | null)?.src ||
+            (document.querySelector('.poster img') as HTMLImageElement | null)?.src ||
+            (document.querySelector('img') as HTMLImageElement | null)?.src ||
+            ''
+          );
+        });
+        await browser.close();
+        const result = Array.from(videoUrls);
 
-      const result = Array.from(videoUrls);
-      await browser.close();
-      const scraped: ScrapeResult = { title: pageTitle, image_url: pageImage, url: result };
-      console.log(scraped)
+        const scraped: ScrapeResult = { title: pageTitle, image_url: pageImage, url: result };
+        console.log(scraped)
 
-      return scraped;
+        return scraped;
+      }
+      else {
+        const result = Array.from(videoUrls);
+        await browser.close();
+
+        console.log(result)
+
+        return { url: result };
+      }
 
     } catch (innerError) {
       if (browser) await browser.close();

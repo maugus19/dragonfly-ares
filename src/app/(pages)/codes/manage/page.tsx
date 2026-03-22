@@ -3,6 +3,7 @@ import { createClient } from '@/utils/supabase/server';
 import TableClient from './TableClient';
 import UploadQueue from './UploadQueue';
 import Link from 'next/link';
+import GridTable from './GridTable';
 
 export default async function ManagePage() {
   const supabase = await createClient();
@@ -31,9 +32,9 @@ export default async function ManagePage() {
       </Box>
 
   <UploadQueue />
-
-      {/* Pasamos los datos al componente de cliente */}
-      <TableClient initialCodes={codes || []} />
+    {
+      false ? <GridTable initialCodes={codes || []}/> : <TableClient initialCodes={codes || []} />
+    }
     </Container>
   );
 }

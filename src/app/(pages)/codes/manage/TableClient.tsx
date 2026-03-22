@@ -9,7 +9,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-type CodeRow = {
+export type CodeRow = {
   id: string;
   code: string;
   url: string;
@@ -41,7 +41,6 @@ export default function TableClient({ initialCodes }: { initialCodes: CodeRow[] 
             <TableCell sx={{ color: 'text.primary' }}><strong>Code</strong></TableCell>
             <TableCell sx={{ color: 'text.primary' }}><strong>Title</strong></TableCell>
             <TableCell sx={{ color: 'text.primary' }}><strong>Image URL</strong></TableCell>
-            <TableCell sx={{ color: 'text.primary' }}><strong>URL</strong></TableCell>
             <TableCell align="center" sx={{ color: 'text.primary' }}><strong>Viewed</strong></TableCell>
             <TableCell align="center" sx={{ color: 'text.primary' }}><strong>Acciones</strong></TableCell>
           </TableRow>
@@ -49,14 +48,14 @@ export default function TableClient({ initialCodes }: { initialCodes: CodeRow[] 
         <TableBody>
           {initialCodes.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
             <TableRow key={row.id} hover>
-              <TableCell>{row.code}</TableCell>
+              <TableCell>
+                <Link href={`/codes/${row.id}`} underline="hover">
+                   {row.code}
+                </Link>
+               </TableCell>
               <TableCell>{row.title}</TableCell>
               <TableCell>{row.image_url}</TableCell>
-              <TableCell>
-                <Link href={row.url} target="_blank" rel="noopener">
-                  {JSON.stringify(row.url)}
-                </Link>
-              </TableCell>
+
               <TableCell align="center">
                 <Checkbox checked={row.viewed} disabled />
               </TableCell>
@@ -74,29 +73,29 @@ export default function TableClient({ initialCodes }: { initialCodes: CodeRow[] 
               </TableCell>
             </TableRow>
           ))}
-          {initialCodes.length === 0 && (
-            <TableRow>
-              <TableCell colSpan={4} align="center">No hay códigos registrados.</TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-        <TableFooter>
+        {initialCodes.length === 0 && (
           <TableRow>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              colSpan={4}
-              count={initialCodes.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={(_event, newPage) => setPage(newPage)}
-              onRowsPerPageChange={(event) => {
-                setRowsPerPage(parseInt(event.target.value, 10))
-                setPage(0)
-              }}
-            />
+            <TableCell colSpan={4} align="center">No hay códigos registrados.</TableCell>
           </TableRow>
-        </TableFooter>
-      </Table>
-    </TableContainer>
+        )}
+      </TableBody>
+      <TableFooter>
+        <TableRow>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            colSpan={4}
+            count={initialCodes.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={(_event, newPage) => setPage(newPage)}
+            onRowsPerPageChange={(event) => {
+              setRowsPerPage(parseInt(event.target.value, 10))
+              setPage(0)
+            }}
+          />
+        </TableRow>
+      </TableFooter>
+    </Table>
+    </TableContainer >
   );
 }
