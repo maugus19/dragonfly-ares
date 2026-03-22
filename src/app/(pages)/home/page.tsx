@@ -11,10 +11,10 @@ export default function HomePage() {
 
       <nav aria-label="primary navigation">
         <Stack direction="row" spacing={2}>
-          <NextLink href="/codes" passHref legacyBehavior>
+          <NextLink href="/codes">
             <MuiLink underline="hover">Codes</MuiLink>
           </NextLink>
-          <NextLink href="/codes/manage" passHref legacyBehavior>
+          <NextLink href="/codes/manage">
             <MuiLink underline="hover">Manage Codes</MuiLink>
           </NextLink>
         </Stack>
