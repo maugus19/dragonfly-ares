@@ -95,23 +95,23 @@ export default function CodeProfile({ params }: { params: Promise<{ id: string }
 }
 
 async function updateCodeUrls(item: CodeRow) {
-  const supabase = await createClient();
 
-  const { data, error } = await supabase
-    .from('codes')
-    .update({
+  const result = await fetch(`/api/codes/${item.id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
       title: item.title, // 👈 solo lo necesario
       url: item.url, // 👈 solo lo necesario
-    })
-    .eq('id', item.id)
-    .select(); // opcional pero útil
+    }),
+  });
 
-  if (error) {
-    console.error('Error updating code URLs:', error);
-    throw error;
+  if (!result.ok) {
+    throw new Error('Error updating URLs');
   }
 
-  return data;
+  return result.json();
 }
 
 async function getCodeById(id: string) {

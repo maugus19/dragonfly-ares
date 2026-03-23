@@ -25,3 +25,28 @@ export async function DELETE(req: Request,
 
   return Response.json({ data });
 }
+
+export async function PUT(req: Request,
+  { params }: { params: Promise<{ id: string }>}) {
+  const supabase = await createClient();
+  const { id } = await params;
+  const { title, url } = await req.json();
+  
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+  }
+
+  const { data, error } = await supabase
+    .from('codes')
+    .update({ title, url })
+    .eq('id', id)
+    .select();
+
+  if (error) {
+    return Response.json({ error: error.message }, { status: 500 });
+  }
+
+  return Response.json({ data });
+}
