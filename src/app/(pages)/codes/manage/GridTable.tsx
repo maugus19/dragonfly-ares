@@ -46,7 +46,7 @@ export default function GridTable({ initialCodes }: { initialCodes: CodeRow[] })
     <Box>
       <Grid container spacing={2} sx={{ mb: 2 }}>
         {initialCodes.map((code) => (
-          <Grid size={4} key={code.id}>
+          <Grid size={{xs:12, sm:6, md:4, lg:4}} key={code.id}>
             <CodeCard key={code.id} {...code} />
           </Grid>
         ))}

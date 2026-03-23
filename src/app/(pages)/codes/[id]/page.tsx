@@ -41,12 +41,12 @@ export default function CodeProfile({ params }: { params: Promise<{ id: string }
   return (
     <Box>
       <Grid container>
-        <Grid size={6} sx={{ textAlign: 'left', p: 4 }}>
+        <Grid size={{xs:12,md:6}} sx={{ textAlign: 'left', p: 4 }}>
           <Link href={`./manage`} >
             Atras
           </Link>
         </Grid>
-        <Grid size={6} sx={{ textAlign: 'end', p: 2 }}>
+        <Grid size={{xs:12,lg:6}} sx={{ textAlign: 'end', p: 2 }}>
           <Button variant="contained" color="primary" onClick={async () => {
             await fetch(`/api/codes/${code?.id}/update-urls`, {
               method: 'POST',
@@ -65,14 +65,12 @@ export default function CodeProfile({ params }: { params: Promise<{ id: string }
           </Button>
         </Grid>
 
-        <Grid size={6} sx={{ mt: 2 }}>
+        <Grid size={{xs:12,md:6}} sx={{ mt: 2 }}>
           <div style={{ height: '480px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <img src={code?.image_url} alt={code?.title} style={{ maxWidth: '100%', height: 'auto' }} />
-
           </div>
-
         </Grid>
-        <Grid size={6} sx={{ textAlign: 'left', mt: 2 }}>
+        <Grid size={{xs:12,md:6}} sx={{ textAlign: 'left', mt: 2 }}>
           <Stack direction="column" spacing={2} style={{ padding: '16px' }}>
             <Typography variant="subtitle1">
               Code Profile: {code?.code}
