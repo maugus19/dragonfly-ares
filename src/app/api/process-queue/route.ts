@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/utils/supabase/server'
-import { scrapping } from '@/utils/scrapper/scrapper'
+import { scrapeComplete, ScrapeResult } from '@/utils/scrapper/scrapper'
 
 // Processes queued scrape jobs. Expects optional JSON body: { limit?: number, delayMs?: number }
 export async function POST(req: Request) {
@@ -31,14 +31,14 @@ export async function POST(req: Request) {
       await supabase.from('scrape_queue').update({ status: 'processing', started_at: new Date().toISOString() }).eq('id', job.id)
 
       // run scrapper
-      const result = await scrapping(job.code)
+      const result: ScrapeResult = await scrapeComplete(job.code)
 
       // upsert into codes table
       const { data: existing } = await supabase.from('codes').select('id').eq('code', job.code).maybeSingle()
       if (existing) {
-        await supabase.from('codes').update({ url: result }).eq('id', existing.id)
+        await supabase.from('codes').update({ url: result.url }).eq('id', existing.id)
       } else {
-        await supabase.from('codes').insert([{ code: job.code, url: result, user_id: user.id }])
+        await supabase.from('codes').insert([{ code: job.code, url: result.url, user_id: user.id, title: result.title, image_url: result.image_url }])
       }
 
       // mark job done

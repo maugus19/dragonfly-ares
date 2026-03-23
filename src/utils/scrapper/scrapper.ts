@@ -5,6 +5,10 @@ import puppeteer from 'puppeteer-core';
 export type ScrapeVideo = { server: string; url: string }
 export type ScrapeResult = { title: string; image_url: string; url: ScrapeVideo[] }
 
+export async function scrapeComplete(code: string): Promise<ScrapeResult> {
+  return await scrapping(code, false) as ScrapeResult;
+}
+
 export async function scrapping(code: string, onlyURLs: boolean = false): Promise<ScrapeResult | { url: ScrapeVideo[] }> {
   try {
     const base_url = process.env.NEXT_PUBLIC_SCRAPPER_BASE_URL;
