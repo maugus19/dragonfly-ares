@@ -27,7 +27,7 @@ export default function HomePage() {
   };
 
   return (
-    <Container maxWidth="sm">
+    <Container>
       <Box sx={{ mt: 8, textAlign: 'center' }}>
         <Typography variant="h4" gutterBottom>Subir Nuevo Código</Typography>
         <form onSubmit={handleSubmit}>

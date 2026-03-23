@@ -1,9 +1,8 @@
 import { Container, Typography, Box, Button } from '@mui/material';
 import { createClient } from '@/utils/supabase/server';
-import TableClient from './TableClient';
 import UploadQueue from './UploadQueue';
 import Link from 'next/link';
-import GridTable from './GridTable';
+import { TableHandler } from './TableHandler';
 
 export default async function ManagePage() {
   const supabase = await createClient();
@@ -32,9 +31,7 @@ export default async function ManagePage() {
       </Box>
 
   <UploadQueue />
-    {
-      false ? <GridTable initialCodes={codes || []}/> : <TableClient initialCodes={codes || []} />
-    }
+    {codes && <TableHandler initialCodes={codes} />}
     </Container>
   );
 }
