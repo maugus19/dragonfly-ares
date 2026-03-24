@@ -1,6 +1,6 @@
 "use client"
 
-import { useContext, useState, MouseEvent } from 'react'
+import { useContext, useState, MouseEvent, useEffect } from 'react'
 import IconButton from '@mui/material/IconButton'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
@@ -14,19 +14,30 @@ export default function ThemeToggle() {
   const { preference, setPreference } = useContext(ThemePreferenceContext)
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [mounted, setMounted] = useState(false)
 
-  // Lightweight menu handling without adding heavy state libs
-  // We'll use a simple boolean and the event target
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true)
+  }, [])
+
   const handleOpen = (e: MouseEvent<HTMLElement>) => setAnchorEl(e.currentTarget)
   const handleClose = () => setAnchorEl(null)
 
   const open = Boolean(anchorEl)
 
+  // 👇 evita hydration mismatch
+  if (!mounted) return null
+
   return (
     <div>
       <Tooltip title={`Theme: ${preference}`}>
         <IconButton onClick={handleOpen} color="inherit" aria-label="theme-toggle">
-          {preference === 'dark' ? <Brightness4Icon /> : preference === 'light' ? <Brightness7Icon /> : <SettingsBrightnessIcon />}
+          {preference === 'dark'
+            ? <Brightness4Icon />
+            : preference === 'light'
+            ? <Brightness7Icon />
+            : <SettingsBrightnessIcon />}
         </IconButton>
       </Tooltip>
 
