@@ -40,7 +40,7 @@ export async function PUT(req: Request,
 
   const { data, error } = await supabase
     .from('codes')
-    .update({ title, url, viewed })
+    .update({ title, url, viewed: viewed })
     .eq('id', id)
     .select();
 

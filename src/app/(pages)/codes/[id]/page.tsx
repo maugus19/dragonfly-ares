@@ -103,6 +103,7 @@ async function updateCodeUrls(item: CodeRow) {
     body: JSON.stringify({
       title: item.title, // 👈 solo lo necesario
       url: item.url, // 👈 solo lo necesario
+      viewed: item.viewed, // 👈 solo lo necesario
     }),
   });
 

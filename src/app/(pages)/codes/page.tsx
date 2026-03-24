@@ -49,9 +49,16 @@ export default function HomePage() {
       </Box>
 
       <Box sx={{ mt: 8, textAlign: 'center' }}>
-        <Link href="/codes/manage" passHref style={{ textDecoration: 'none' }}>
+        <Link href="/codes/manage"  style={{ textDecoration: 'none' }}>
           <Button variant="contained" color="secondary">
             Manage
+          </Button>
+        </Link>
+      </Box>
+      <Box sx={{ mt: 8, textAlign: 'center' }}>
+        <Link href="/codes/manual-create" style={{ textDecoration: 'none' }}>
+          <Button variant="contained" color="secondary">
+            Create Manually
           </Button>
         </Link>
       </Box>
@@ -64,6 +71,7 @@ export default function HomePage() {
           Update Manga
         </Button>
       </Box>
+      
     </Container>
   );
 }

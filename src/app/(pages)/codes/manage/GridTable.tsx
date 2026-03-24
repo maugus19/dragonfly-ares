@@ -27,7 +27,7 @@ function CodeCard(props: CodeRow) {
         <CardHeader title={`${props.code}  [${props.url.length}] urls`} action={
           <Stack direction="row" spacing={1} alignItems="center">
             <IconButton  disabled>
-              {props.viewed ? <VisibilityIcon color="primary" /> : <VisibilityOffIcon color="disabled" />}
+              {props.viewed ? <VisibilityIcon color="disabled" /> : <VisibilityOffIcon color="disabled" />}
             </IconButton>
             <div>
             </div>
