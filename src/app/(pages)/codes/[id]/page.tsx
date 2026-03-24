@@ -27,6 +27,7 @@ export default function CodeProfile({ params }: { params: Promise<{ id: string }
     const updatedCode = {
       ...code,
       url: urls,
+      viewed: true,
     };
 
     try {

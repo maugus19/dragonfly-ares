@@ -1,0 +1,8 @@
+.card {
+  cursor: pointer;
+  
+  :hover {
+    border-color: rgb(228, 153, 224);
+    color: rgb(228, 153, 224);
+  }
+}

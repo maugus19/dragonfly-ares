@@ -30,7 +30,7 @@ export async function PUT(req: Request,
   { params }: { params: Promise<{ id: string }>}) {
   const supabase = await createClient();
   const { id } = await params;
-  const { title, url } = await req.json();
+  const { title, url, viewed } = await req.json();
   
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -40,7 +40,7 @@ export async function PUT(req: Request,
 
   const { data, error } = await supabase
     .from('codes')
-    .update({ title, url })
+    .update({ title, url, viewed })
     .eq('id', id)
     .select();
 
