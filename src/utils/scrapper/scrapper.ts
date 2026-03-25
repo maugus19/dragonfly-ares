@@ -36,7 +36,7 @@ export async function scrapping(code: string, onlyURLs: boolean = false): Promis
     // Interceptar tráfico para capturar URLs de video
     page.on("request", (request) => {
       const reqUrl = request.url();
-      if (reqUrl.match(/\.(mp4|m3u8|webm|ogg)$/i) && (!reqUrl.startsWith("https://s3t3d2y1") || !reqUrl.startsWith("https://video.sacdnssedge.com"))) {
+      if (reqUrl.match(/\.(mp4|m3u8|webm|ogg)$/i)) {
         videoUrls.add({ server: serverName, url: reqUrl });
       }
       request.continue();
