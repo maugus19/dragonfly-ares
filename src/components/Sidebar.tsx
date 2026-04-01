@@ -137,7 +137,15 @@ export default function Sidebar({ children }: { children?: React.ReactNode }) {
 
   return (
     <Box sx={{ display: 'flex', height: '100vh' }}>
-      <AppBar position="fixed" sx={{ zIndex: theme.zIndex.drawer + 1 }}>
+      <AppBar
+        position="fixed"
+        sx={{
+          zIndex: theme.zIndex.drawer + 1,
+          left: 0,
+          right: 0,
+          width: '100%'
+        }}
+      >
         <Toolbar>
           {isMobile && (
             <IconButton color="inherit" edge="start" onClick={handleDrawerToggle} sx={{ mr: 2 }} aria-label="open drawer">
@@ -179,7 +187,7 @@ export default function Sidebar({ children }: { children?: React.ReactNode }) {
         </Drawer>
       )}
 
-      <Box component="main" sx={{ flexGrow: 1, p: 3, ml: { sm: `${collapsed ? COLLAPSED_WIDTH : DRAWER_WIDTH}px` }, transition: 'margin-left 240ms cubic-bezier(0.4, 0, 0.2, 1)', width: { sm: `calc(100% - ${collapsed ? COLLAPSED_WIDTH : DRAWER_WIDTH}px)` } }}>
+      <Box component="main" sx={{ flexGrow: 1, p: { xs: 1, sm: 3 }, ml: { sm: `${collapsed ? COLLAPSED_WIDTH : DRAWER_WIDTH}px` }, transition: 'margin-left 240ms cubic-bezier(0.4, 0, 0.2, 1)', width: { sm: `calc(100% - ${collapsed ? COLLAPSED_WIDTH : DRAWER_WIDTH}px)` } }}>
         <Toolbar />
         {children}
       </Box>

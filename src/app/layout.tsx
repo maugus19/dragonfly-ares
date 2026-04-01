@@ -1,11 +1,9 @@
 import ThemeRegistry from '@/components/ThemeRegistry';
-import { Grid, Typography } from '@mui/material';
-import Link from 'next/link';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
-      <body>
+      <body style={{ margin: 0, padding: 0 }}>
         <ThemeRegistry>
           {children}
         </ThemeRegistry>

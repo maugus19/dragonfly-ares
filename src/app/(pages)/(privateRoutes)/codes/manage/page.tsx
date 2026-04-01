@@ -18,7 +18,7 @@ export default async function ManagePage() {
   }
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
+    <Container sx={{ my: 4, maxWidth: '100vw' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Typography variant="h4" component="h1" fontWeight="bold">
           Gestión de Codes
