@@ -1,20 +1,25 @@
-import { Container, Typography, Box, Button } from '@mui/material';
-import { createClient } from '@/utils/supabase/server';
-import UploadQueue from './UploadQueue';
-import Link from 'next/link';
-import { TableHandler } from './TableHandler';
+import { Container, Typography, Box, Button } from '@mui/material'
+import { createClient } from '@/utils/supabase/server'
+import UploadQueue from './UploadQueue'
+import Link from 'next/link'
+import GridInfinite from './GridInfinite'
 
 export default async function ManagePage() {
-  const supabase = await createClient();
+  const supabase = await createClient()
 
-  // Obtenemos los datos de la tabla 'codes'
+  // Fetch the first page server-side to seed the client
   const { data: codes, error } = await supabase
     .from('codes')
     .select('*')
-    .order('created_at', { ascending: false });
+    .order('created_at', { ascending: false })
+    .range(0, 11)
 
   if (error) {
-    return <Container><Typography color="error">Error al cargar datos</Typography></Container>;
+    return (
+      <Container>
+        <Typography color="error">Error al cargar datos</Typography>
+      </Container>
+    )
   }
 
   return (
@@ -30,8 +35,8 @@ export default async function ManagePage() {
         </Link>
       </Box>
 
-  <UploadQueue />
-    {codes && <TableHandler initialCodes={codes} />}
+      <UploadQueue />
+      <GridInfinite initialData={(codes || []) as unknown as import('./TableClient').CodeRow[]} />
     </Container>
-  );
+  )
 }
