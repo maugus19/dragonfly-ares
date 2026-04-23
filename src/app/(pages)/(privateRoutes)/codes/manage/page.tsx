@@ -11,7 +11,7 @@ export default async function ManagePage() {
   const { data: codes, error } = await supabase
     .from('codes')
     .select('*')
-    .order('time', { ascending: false });
+    .order('created_at', { ascending: false });
 
   if (error) {
     return <Container><Typography color="error">Error al cargar datos</Typography></Container>;
