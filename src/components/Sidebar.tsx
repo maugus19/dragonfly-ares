@@ -31,6 +31,13 @@ import ThemeToggle from '@/components/ThemeToggle'
 const DRAWER_WIDTH = 240
 const COLLAPSED_WIDTH = 72
 
+type RouteType = {
+  label: string
+  icon?: React.ReactElement
+  route?: string
+  subRoutes?: RouteType[]
+}
+
 export default function Sidebar({ children }: { children?: React.ReactNode }) {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
@@ -52,11 +59,112 @@ export default function Sidebar({ children }: { children?: React.ReactNode }) {
     if (route === '/') return pathname === '/'
     return pathname === route || pathname.startsWith(route + '/')
   }
+  const routes: RouteType[] = [
+    { label: 'Home', icon: <HomeIcon />, route: '/' },
+    {
+      label: 'Codes',
+      icon: <CodeIcon />,
+      subRoutes: [
+        { label: 'Agregar', route: '/codes' },
+        { label: 'Manage', route: '/codes/manage' },
+        { label: 'Queue', route: '/codes/queue' }
+      ]
+    }
+  ]
+
+  const getRouteItem = (route: RouteType) => {
+    if (route.subRoutes) {
+      return getAccordionSummary(route)
+    }
+    if (route.route) {
+      return getMainItemNavigation(route.route, route.icon || <></>, route.label)
+    }
+    return null
+  }
+
+  const getMainItemNavigation = (route: string, icon: React.ReactElement, label: string) => {
+    return (
+      <ListItem disablePadding sx={{ display: 'block' }}>
+        <ListItemButton onClick={() => router.push(route)} selected={isActive(route)} sx={{ minHeight: 48, justifyContent: collapsed ? 'center' : 'initial', px: 2.5 }}>
+          <ListItemIcon sx={{ minWidth: 0, mr: collapsed ? 0 : 3, justifyContent: 'center' }}>
+            {collapsed ? (
+              <Tooltip title={label} placement="right">
+                {icon}
+              </Tooltip>
+            ) : (
+              <>{icon}</>
+            )}
+          </ListItemIcon>
+          <ListItemText primary={label} sx={{ display: collapsed ? 'none' : 'block', opacity: collapsed ? 0 : 1, transition: 'opacity 200ms', whiteSpace: 'nowrap' }} />
+        </ListItemButton>
+      </ListItem>
+    )
+  }
+
+  const getAccordionSummary = ({ icon, label, subRoutes }: RouteType) => {
+    return (
+      <Accordion disableGutters elevation={0} square sx={{ background: 'transparent', '&:before': { display: 'none' } }}>
+        <AccordionSummary
+          expandIcon={!collapsed ? <ExpandMoreIcon /> : undefined}
+          sx={{
+            px: collapsed ? 1 : 0,
+            minHeight: 48,
+            display: 'flex',
+            alignItems: 'center',
+            '& .MuiAccordionSummary-content': { margin: 0, alignItems: 'center' }
+          }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+            <ListItemIcon sx={{ minWidth: 0, mr: collapsed ? 0 : 3, justifyContent: 'center' }}>
+              {collapsed ? (
+                <Tooltip title={label} placement="right">
+                  {icon ? icon : <></>}
+                </Tooltip>
+              ) : (
+                <>
+                {icon ? icon : <></>}
+                </>
+              )}
+            </ListItemIcon>
+            <ListItemText
+              primary={label}
+              sx={{
+                display: collapsed ? 'none' : 'block',
+                opacity: collapsed ? 0 : 1,
+                transition: 'opacity 200ms',
+                whiteSpace: 'nowrap'
+              }}
+            />
+          </Box>
+        </AccordionSummary>
+        {subRoutes && getAccordionDetailsNavigation(subRoutes)}
+      </Accordion>
+    )
+  }
+
+  const getAccordionDetailsNavigation = (routes: RouteType[]) => {
+    return (
+      <AccordionDetails sx={{ p: 0 }}>
+        <List disablePadding>
+          {
+            routes.map((subRoute) => (
+              <ListItem disablePadding key={subRoute.route}>
+                <ListItemButton onClick={() => router.push(subRoute.route!)} selected={isActive(subRoute.route!)} sx={{ pl: collapsed ? 2 : 6 }}>
+                  <ListItemText primary={subRoute.label} />
+                </ListItemButton>
+              </ListItem>
+            ))
+          }
+        </List>
+      </AccordionDetails>
+    )
+  }
+
 
   const drawerContent = (
     <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <Toolbar sx={{ display: 'flex', alignItems: 'center', justifyContent: collapsed ? 'center' : 'space-between', px: 2 }}>
-        {!collapsed && <Typography variant="h6">Admin</Typography>} 
+        {!collapsed && <Typography variant="h6">Admin</Typography>}
         <IconButton onClick={toggleCollapsed} size="small" aria-label="collapse sidebar">
           {collapsed ? <ChevronRightIcon /> : <ChevronLeftIcon />}
         </IconButton>
@@ -64,68 +172,11 @@ export default function Sidebar({ children }: { children?: React.ReactNode }) {
       <Divider />
 
       <List>
-        <ListItem disablePadding sx={{ display: 'block' }}>
-          <ListItemButton onClick={() => router.push('/')} selected={isActive('/')} sx={{ minHeight: 48, justifyContent: collapsed ? 'center' : 'initial', px: 2.5 }}>
-            <ListItemIcon sx={{ minWidth: 0, mr: collapsed ? 0 : 3, justifyContent: 'center' }}>
-              {collapsed ? (
-                <Tooltip title="Home" placement="right">
-                  <HomeIcon />
-                </Tooltip>
-              ) : (
-                <HomeIcon />
-              )}
-            </ListItemIcon>
-            <ListItemText primary="Home" sx={{ display: collapsed ? 'none' : 'block', opacity: collapsed ? 0 : 1, transition: 'opacity 200ms', whiteSpace: 'nowrap' }} />
-          </ListItemButton>
-        </ListItem>
-
-        <Accordion disableGutters elevation={0} square sx={{ background: 'transparent', '&:before': { display: 'none' } }}>
-          <AccordionSummary
-            expandIcon={!collapsed ? <ExpandMoreIcon /> : undefined}
-              sx={{
-                px: collapsed ? 1 : 0,
-                minHeight: 48,
-                display: 'flex',
-                alignItems: 'center',
-                '& .MuiAccordionSummary-content': { margin: 0, alignItems: 'center' }
-              }}
-          >
-            <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-              <ListItemIcon sx={{ minWidth: 0, mr: collapsed ? 0 : 3, justifyContent: 'center' }}>
-                {collapsed ? (
-                  <Tooltip title="Codes" placement="right">
-                    <CodeIcon />
-                  </Tooltip>
-                ) : (
-                  <CodeIcon />
-                )}
-              </ListItemIcon>
-              <ListItemText
-                primary="Codes"
-                sx={{
-                  display: collapsed ? 'none' : 'block',
-                  opacity: collapsed ? 0 : 1,
-                  transition: 'opacity 200ms',
-                  whiteSpace: 'nowrap'
-                }}
-              />
-            </Box>
-          </AccordionSummary>
-          <AccordionDetails sx={{ p: 0 }}>
-            <List disablePadding>
-              <ListItem disablePadding>
-                <ListItemButton onClick={() => router.push('/codes')} selected={isActive('/codes')} sx={{ pl: collapsed ? 2 : 6 }}>
-                  <ListItemText primary="Agregar" />
-                </ListItemButton>
-              </ListItem>
-              <ListItem disablePadding>
-                <ListItemButton onClick={() => router.push('/codes/manage')} selected={isActive('/codes/manage')} sx={{ pl: collapsed ? 2 : 6 }}>
-                  <ListItemText primary="Manage" />
-                </ListItemButton>
-              </ListItem>
-            </List>
-          </AccordionDetails>
-        </Accordion>
+        {routes.map((route) => (
+          <React.Fragment key={route.label}>
+            {getRouteItem(route)}
+          </React.Fragment>
+        ))}
       </List>
 
       <Box sx={{ flexGrow: 1 }} />
@@ -187,7 +238,7 @@ export default function Sidebar({ children }: { children?: React.ReactNode }) {
         </Drawer>
       )}
 
-      <Box component="main" sx={{ flexGrow: 1, p: { xs: 1, sm: 3 }, ml: { sm: `${collapsed ? COLLAPSED_WIDTH : DRAWER_WIDTH}px` }, transition: 'margin-left 240ms cubic-bezier(0.4, 0, 0.2, 1)', width: { sm: `calc(100% - ${collapsed ? COLLAPSED_WIDTH : DRAWER_WIDTH}px)` } }}>
+      <Box component="main" sx={{ flexGrow: 1, p: { xs: 1, sm: 3 }, ml: 0, transition: 'margin-left 240ms cubic-bezier(0.4, 0, 0.2, 1)', width: { sm: `calc(100% - ${collapsed ? COLLAPSED_WIDTH : DRAWER_WIDTH}px)` } }}>
         <Toolbar />
         {children}
       </Box>
