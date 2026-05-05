@@ -27,6 +27,9 @@ import { useTheme } from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { useRouter, usePathname } from 'next/navigation'
 import ThemeToggle from '@/components/ThemeToggle'
+import PeopleIcon from '@mui/icons-material/People';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import SchoolIcon from '@mui/icons-material/School';
 
 const DRAWER_WIDTH = 240
 const COLLAPSED_WIDTH = 72
@@ -68,6 +71,30 @@ export default function Sidebar({ children }: { children?: React.ReactNode }) {
         { label: 'Agregar', route: '/codes' },
         { label: 'Manage', route: '/codes/manage' },
         { label: 'Queue', route: '/codes/queue' }
+      ]
+    },
+    {
+      label: 'Users',
+      icon: <ManageAccountsIcon />,
+      subRoutes: [
+        { label: 'List', route: '/users' },
+        { label: 'Create', route: '/users/create' }
+      ]
+    },
+    {
+      label: 'Students',
+      icon: <PeopleIcon />,
+      subRoutes: [
+        { label: 'List', route: '/students' },
+        { label: 'Upload', route: '/students/upload' }
+      ]
+    },
+    {
+      label: 'Courses',
+      icon: <SchoolIcon />,
+      subRoutes: [
+        { label: 'List', route: '/courses' },
+        { label: 'Create', route: '/courses/create' }
       ]
     }
   ]
