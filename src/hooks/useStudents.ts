@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchStudents } from "@/services/students.service";
 
-type Params = {
+export type Params = {
   page: number;
   pageSize: number;
   sortField?: string;

@@ -30,6 +30,7 @@ import ThemeToggle from '@/components/ThemeToggle'
 import PeopleIcon from '@mui/icons-material/People';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import SchoolIcon from '@mui/icons-material/School';
+import { createClient } from '@/utils/supabase/client';
 
 const DRAWER_WIDTH = 240
 const COLLAPSED_WIDTH = 72
@@ -38,6 +39,7 @@ type RouteType = {
   label: string
   icon?: React.ReactElement
   route?: string
+  hidden?: boolean
   subRoutes?: RouteType[]
 }
 

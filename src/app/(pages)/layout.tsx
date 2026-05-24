@@ -2,10 +2,10 @@ import React from "react";
 
 export const metadata = {
   title: 'Dragonfly Ares',
-  description: 'Gestión y procesamiento de códigos con scrapper integrado',
+  description: '',
   openGraph: {
     title: 'Dragonfly Ares',
-    description: 'Gestión y procesamiento de códigos con scrapper integrado',
+    description: '',
     siteName: 'Dragonfly Ares',
   },
   icons: {

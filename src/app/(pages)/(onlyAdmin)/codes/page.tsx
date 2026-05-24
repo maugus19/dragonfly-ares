@@ -18,8 +18,12 @@ export default function HomePage() {
 
     const result = await res.json();
     if (res.ok) {
+      if (result.message) {
+        setStatus({ msg: result.message, type: 'error' });
+      } else {
       setStatus({ msg: 'Código procesado y guardado!', type: 'success' });
       setCode('');
+    }
     } else {
       setStatus({ msg: result.error, type: 'error' });
     }
