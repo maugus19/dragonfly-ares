@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import LinkIcon from '@mui/icons-material/Link';
 import './styles.css';
 
 function CodeCard(props: CodeRow) {
@@ -21,6 +22,10 @@ function CodeCard(props: CodeRow) {
       router.refresh();
     }
   };
+
+  const handleOpenExternal = (code: string) => {
+    window.open(`${process.env.NEXT_PUBLIC_SCRAPPER_BASE_URL}${code}`, '_blank');
+  }
   return (
     <Paper elevation={3} sx={{ mb: 2, p: 0, height: '390px' }} className="card" onClick={handleOnClick} >
       <Card variant="outlined" sx={{ mb: 2, p: 2, height: '390px' }} onClick={handleOnClick} >
@@ -31,6 +36,12 @@ function CodeCard(props: CodeRow) {
             </IconButton>
             <div>
             </div>
+            <IconButton onClick={(e) => {
+              e.stopPropagation();
+              handleOpenExternal(props.code);
+            }}>
+              <LinkIcon />
+            </IconButton>
             <IconButton onClick={(e) => {
               e.stopPropagation();
               handleDelete(props.id);
