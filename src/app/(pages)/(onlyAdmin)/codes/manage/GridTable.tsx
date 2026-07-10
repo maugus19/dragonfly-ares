@@ -24,7 +24,7 @@ function CodeCard(props: CodeRow) {
   };
 
   const handleOpenExternal = (code: string) => {
-    window.open(`${process.env.NEXT_PUBLIC_SCRAPPER_BASE_URL}${code}`, '_blank');
+    window.open(`https://missav.ws/en/${code}`, '_blank');
   }
   return (
     <Paper elevation={3} sx={{ mb: 2, p: 0, height: '390px' }} className="card" onClick={handleOnClick} >
